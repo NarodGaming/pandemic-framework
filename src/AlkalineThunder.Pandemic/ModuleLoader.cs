@@ -7,12 +7,23 @@ namespace AlkalineThunder.Pandemic
 {
     public static class ModuleLoader
     {
+        private static List<Assembly> _loadedAssemblies = new List<Assembly>();
+
+        public static IEnumerable<Assembly> GetLoadedAssemblies()
+        {
+            foreach (var ass in _loadedAssemblies)
+                yield return ass;
+        }
+        
         public static IEnumerable<EngineModule> LoadModules(GameLoop ctx, Assembly ass)
         {
             var types = FindModulesInAssembly(ass);
 
             foreach (var module in LoadModules(ctx, types))
             {
+                if (!_loadedAssemblies.Contains(ass))
+                    _loadedAssemblies.Add(ass);
+
                 yield return module;
             }
 
