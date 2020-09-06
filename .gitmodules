@@ -1,0 +1,3 @@
+[submodule "third-party/SpriteFontPlus"]
+	path = third-party/SpriteFontPlus
+	url = https://github.com/alkalinethunder/SpriteFontPlus
