@@ -16,7 +16,7 @@ namespace AlkalineThunder.Pandemic.Debugging
     /// Provides the engine with a simple pull-down developer console.
     /// </summary>
     [RequiresModule(typeof(SceneSystem))]
-    public sealed class DevConsole : EngineModule
+    public sealed class DevConsole : EngineModule, ITabCompletionSource
     {
         private bool _isOpen;
         private Box _overlay;
@@ -52,7 +52,8 @@ namespace AlkalineThunder.Pandemic.Debugging
 
             _console = new ConsoleControl
             {
-                DoShellInterrupts = false
+                DoShellInterrupts = false,
+                TabCompletionSource = this
             };
             _consoleHolder.Content = _console;
 
@@ -268,5 +269,7 @@ namespace AlkalineThunder.Pandemic.Debugging
         {
             
         }
+
+        public IEnumerable<string> AvailableCompletions => _commands.Select(x => x.Name);
     }
 }
