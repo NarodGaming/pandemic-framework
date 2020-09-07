@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using AlkalineThunder.Pandemic.CommandLine;
 using AlkalineThunder.Pandemic.Settings;
 using AlkalineThunder.Pandemic.Skinning.Json;
@@ -103,8 +104,19 @@ namespace AlkalineThunder.Pandemic.Skinning
         [Exec("gui.resetSkin")]
         public void LoadDefaultSkin()
         {
+            // determine the skin json path.
+            var jsonPath = Path.Combine(GameLoop.Content.RootDirectory, "skin.json");
+            if (!File.Exists(jsonPath))
+            {
+                // Fall back to framework default skin if a skin.json isn't found in game assets.
+                jsonPath = Path.Combine(GameLoop.FrameworkContent.RootDirectory, "skin.json");
+                if (!File.Exists(jsonPath))
+                    throw new CompleteAndTotalFuckingIdiotDeveloperException(
+                        "Somehow, the engine was built without a global default fallback GUI skin.  I don't know how.... but somehow, it did. And that's a problem. So I'm just going to crash.");
+            }
+            
             // Load the default skin file (TEMP)
-            var skinJson = File.ReadAllText(Path.Combine(GameLoop.Content.RootDirectory, "skin.json"));
+            var skinJson = File.ReadAllText(Path.Combine(jsonPath));
             var jsonSkinData = JsonConvert.DeserializeObject<JsonSkinData>(skinJson);
             _skin = Skin.FromJsonSkin(this, jsonSkinData);
             

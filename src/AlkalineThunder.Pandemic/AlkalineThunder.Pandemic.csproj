@@ -26,15 +26,22 @@
     <ItemGroup>
       <ProjectReference Include="..\..\third-party\SpriteFontPlus\src\SpriteFontPlus.MonoGame.csproj" />
     </ItemGroup>
-
+    
     <ItemGroup>
-      <Folder Include="FrameworkContent" />
+      <None Update="FrameworkContent\skin.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="FrameworkContent\GenericSansSerif.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="FrameworkContent\GenericMono.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\..\..\src\AlkalineThunder.SociallyDistant\Content\bin\DesktopGL\Content\GuiEffects\Blur.xnb">
-        <Link>FrameworkContent\GuiEffects\Blur.xnb</Link>
-      </Content>
+        <None Include=".\FrameworkContent\GenericSansSerif.ttf" />
+        <None Include=".\FrameworkContent\GenericMono.ttf" />
     </ItemGroup>
-
+    
 </Project>

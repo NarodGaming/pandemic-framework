@@ -145,13 +145,15 @@ namespace AlkalineThunder.Pandemic.Skinning
                 try
                 {
                     var contentPath = Path.Combine(ctx.GameLoop.Content.RootDirectory, path);
-                    using (var s = File.OpenRead(contentPath))
-                    {
-                        var buffer = new byte[s.Length];
-                        s.Read(buffer, 0, buffer.Length);
+                    if (!File.Exists(contentPath))
+                        contentPath = Path.Combine(ctx.GameLoop.FrameworkContent.RootDirectory, path);
 
-                        loaded = DynamicSpriteFont.FromTtf(buffer, (int) size, 2048, 2048);
-                    }
+                    using var s = File.OpenRead(contentPath);
+                    
+                    var buffer = new byte[s.Length];
+                    s.Read(buffer, 0, buffer.Length);
+
+                    loaded = DynamicSpriteFont.FromTtf(buffer, (int) size, 2048, 2048);
                 }
                 catch
                 {

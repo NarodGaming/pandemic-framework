@@ -1,0 +1,55 @@
+﻿{
+  "meta": {
+    "name": "Pandemic Default",
+    "author": "Michael VanOverbeek",
+    "description": "The default fallback skin for Pandemic Framework."
+  },
+  "colors": {
+    "light": {
+      "background": "#fff",
+      "foreground": "#000",
+      "primary": "#1baaf7",
+      "secondary": "#808080",
+      "warning": "orange",
+      "error": "red",
+      "info": "purple",
+      "success": "green"
+    },
+    "dark": {
+      "background": "#000",
+      "foreground": "#fff",
+      "primary": "#1baaf7",
+      "secondary": "#808080",
+      "warning": "orange",
+      "error": "red",
+      "info": "purple",
+      "success": "green"
+    }
+  },
+  "fonts": {
+    "paragraph": {
+      "path": "GenericSansSerif.ttf",
+      "size": "15"
+    },
+    "h1": {
+      "path": "GenericSansSerif.ttf",
+      "size": "24"
+    },
+    "h2": {
+      "path": "GenericSansSerif.ttf",
+      "size": "20"
+    },
+    "h3": {
+      "path": "GenericSansSerif.ttf",
+      "size": "18"
+    },
+    "overline": {
+      "path": "GenericSansSerif.ttf",
+      "size": "13"
+    },
+    "code": {
+      "path": "GenericMono.ttf",
+      "size": "15"
+    }
+  }
+}
