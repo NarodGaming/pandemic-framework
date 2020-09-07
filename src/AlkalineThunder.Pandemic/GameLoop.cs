@@ -11,6 +11,7 @@ using AlkalineThunder.Pandemic.Debugging;
 using AlkalineThunder.Pandemic.Rendering;
 using AlkalineThunder.Pandemic.Settings;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 
@@ -37,6 +38,11 @@ namespace AlkalineThunder.Pandemic
         private SpriteRocket2D _renderer;
         private List<EngineModule> _activeModules = new List<EngineModule>();
         private RenderTarget2D _renderTarget;
+        
+        /// <summary>
+        /// Gets an instance of the ContentManager for the Pandemic Framework's global content.
+        /// </summary>
+        public ContentManager FrameworkContent { get; }
         
         /// <summary>
         /// Gets an instance of the engine's developer console.
@@ -76,10 +82,17 @@ namespace AlkalineThunder.Pandemic
                 throw new InvalidOperationException("A game is already running in this process.");
             
             CurrentGame = this;
-            
+
             _graphics = new GraphicsDeviceManager(this);
             
-            Content.RootDirectory = !string.IsNullOrWhiteSpace(AppDomain.CurrentDomain.BaseDirectory) ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content") : "Content";
+            FrameworkContent = new ContentManager(this.Services);
+
+            Content.RootDirectory = !string.IsNullOrWhiteSpace(AppDomain.CurrentDomain.BaseDirectory)
+                ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content")
+                : "Content";
+            FrameworkContent.RootDirectory = !string.IsNullOrWhiteSpace(AppDomain.CurrentDomain.BaseDirectory)
+                ? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FrameworkContent")
+                : "FrameworkContent";
 
             IsMouseVisible = true;
             IsFixedTimeStep = false;
@@ -211,7 +224,7 @@ namespace AlkalineThunder.Pandemic
         /// </summary>
         protected override void LoadContent()
         {
-            Blur = Content.Load<Effect>("GuiEffects/Blur");
+            Blur = FrameworkContent.Load<Effect>("GuiEffects/Blur");
             
             // Initialize the renderer.
             _renderer = new SpriteRocket2D(GraphicsDevice);
