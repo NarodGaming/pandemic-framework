@@ -6,6 +6,9 @@ using AlkalineThunder.Pandemic.Gui;
 using AlkalineThunder.Pandemic.Gui.Controls;
 using AlkalineThunder.Pandemic.Scenes;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
+using AlkalineThunder.Pandemic.CommandLine;
 
 namespace AlkalineThunder.Pandemic.Debugging
 {
@@ -21,7 +24,8 @@ namespace AlkalineThunder.Pandemic.Debugging
         private ConsoleControl _console;
         private Task _consoleTask;
         private bool _printStackTraces;
-
+        private List<ConsoleCommand> _commands = new List<ConsoleCommand>();
+        
         private SceneSystem SceneSystem
             => GetModule<SceneSystem>();
         
@@ -61,6 +65,69 @@ namespace AlkalineThunder.Pandemic.Debugging
             {
                 Close();
             };
+        }
+
+        protected override void OnLoadContent()
+        {
+            FindStaticExecs();
+        }
+
+        internal void RegisterCommandsInternal(object obj)
+        {
+            var type = obj.GetType();
+
+            foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var execAttribute = method.GetCustomAttributes(false).OfType<ExecAttribute>().FirstOrDefault();
+                if (execAttribute != null)
+                {
+                    var cmd = new ConsoleCommand(execAttribute.Name, "", method, obj);
+                    GameUtils.Log($" >> {cmd.Name}");
+                    _commands.Add(cmd);
+                }
+            }
+        }
+
+        internal void UnregisterCommandsInternal(object obj)
+        {
+            var indexesToRemove = new List<int>();
+            
+            for (var i = 0; i < _commands.Count; i++)
+            {
+                if (_commands[i].This == obj)
+                    indexesToRemove.Add(i);
+            }
+
+            while (indexesToRemove.Count > 0)
+            {
+                var last = indexesToRemove.Last();
+                _commands.RemoveAt(last);
+                indexesToRemove.RemoveAt(indexesToRemove.Count - 1);
+            }
+        }
+        
+        private void FindStaticExecs()
+        {
+            GameUtils.Log("Looking for static exec methods...");
+
+            foreach (var assembly in ModuleLoader.GetLoadedAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    foreach (var staticMethod in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                    {
+                        var execAttribute = staticMethod.GetCustomAttributes(false).OfType<ExecAttribute>()
+                            .FirstOrDefault();
+
+                        if (execAttribute != null)
+                        {
+                            var command = new ConsoleCommand(execAttribute.Name, "", staticMethod);
+                            GameUtils.Log($" >> {command.Name}");
+                            _commands.Add(command);
+                        }
+                    }
+                }
+            }
         }
         
         /// <summary>
@@ -116,7 +183,22 @@ namespace AlkalineThunder.Pandemic.Debugging
 
                 try
                 {
-                    await GameLoop.ExcecuteCommand(line, output, input);
+                    var tokens = ShellUtils.Tokenize(line);
+                    if (tokens.Length == 0)
+                        continue;
+
+                    var name = tokens.First();
+                    var args = tokens.Skip(1).ToArray();
+
+                    var command = _commands.FirstOrDefault(x => x.Name == name);
+
+                    if (command == null)
+                    {
+                        WriteLine($"{name}: command not recognized.");
+                        continue;
+                    }
+
+                    await command.Call(GameLoop, args);
                 }
                 catch (TargetInvocationException ex)
                 {
@@ -154,6 +236,15 @@ namespace AlkalineThunder.Pandemic.Debugging
             _printStackTraces = value;
         }
 
+        [Exec("help")]
+        public void Exec_Help()
+        {
+            foreach (var command in _commands.OrderBy(x => x.Name))
+            {
+                WriteLine($" - {command.Usage}");
+            }
+        }
+        
         /// <inheritdoc />
         protected override void OnUpdate(GameTime gameTime)
         {

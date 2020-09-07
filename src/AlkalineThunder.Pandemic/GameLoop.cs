@@ -117,6 +117,11 @@ namespace AlkalineThunder.Pandemic
 
             if (_reachedLoadContent)
                 module.LoadContent();
+
+            if (IsModuleActive<DevConsole>())
+            {
+                GetModule<DevConsole>().RegisterCommandsInternal(module);
+            }
         }
         
         /// <summary>
@@ -167,10 +172,33 @@ namespace AlkalineThunder.Pandemic
         {
             // Module loader can now initialize modules.
             _reachedInit = true;
+
+            // holds modules that need to be registered with the dev console when the console's been initialized.
+            var execsToSeek = new List<object>();
+
+            // dev console instance once we've loaded it.
+            DevConsole console = null;
             
             // Speaking of which, initialize core modules.
             foreach (var mod in ModuleLoader.LoadModules(this, this.GetType().Assembly))
             {
+                if (mod is DevConsole con && console == null)
+                {
+                    console = con;
+                    while (execsToSeek.Count > 0)
+                    {
+                        var o = execsToSeek.First();
+                        console.RegisterCommandsInternal(o);
+
+                        execsToSeek.RemoveAt(0);
+                    }
+                }
+
+                if (console == null)
+                {
+                    execsToSeek.Add(mod);
+                }
+                
                 RegisterModule(mod);
             }
             
@@ -426,118 +454,6 @@ namespace AlkalineThunder.Pandemic
             _graphics.ApplyChanges();
         }
         
-        private bool FindExecCommand(string name, out object instance, out MethodInfo method)
-        {
-            var objectsToScan = new List<object>();
-
-            objectsToScan.Add(this);
-
-            foreach (var mod in _activeModules)
-            {
-                objectsToScan.Add(mod);
-            }
-            
-            foreach (var obj in objectsToScan)
-            {
-                var objType = obj.GetType();
-
-                var methods = objType.GetMethods(BindingFlags.NonPublic).Concat(objType.GetMethods());
-
-                foreach (var m in methods)
-                {
-                    var exec = m.GetCustomAttributes(false).FirstOrDefault(x => x is ExecAttribute) as ExecAttribute;
-
-                    if (exec != null && exec.Name == name)
-                    {
-                        instance = obj;
-                        method = m;
-                        return true;
-                    }
-                }
-            }
-            
-            instance = null;
-            method = null;
-            return false;
-        }
-
-        private string GetUsage(string name, ParameterInfo[] parameters)
-        {
-            var sb = new StringBuilder();
-            
-            sb.Append("Usage: " + name);
-
-            foreach (var p in parameters)
-            {
-                sb.Append(" ");
-
-                if (p.IsOptional)
-                {
-                    sb.Append($"[{p.Name}]");
-                }
-                else
-                {
-                    sb.Append($"<{p.Name}>");
-                }
-            }
-            
-            return sb.ToString();
-        }
-        
-        internal async Task ExcecuteCommand(string commandLine, StreamWriter output, StreamReader input)
-        {
-            if (output == null)
-                throw new ArgumentNullException(nameof(output));
-            
-            if (input == null)
-                throw new ArgumentNullException(nameof(input));
-
-            var tokens = ShellUtils.Tokenize(commandLine);
-
-            if (tokens.Length > 0)
-            {
-                var name = tokens[0];
-                var args = tokens.Skip(1).ToArray();
-
-                if (FindExecCommand(name, out object instance, out MethodInfo method))
-                {
-                    var objs = new List<object>();
-                    var parameters = method.GetParameters();
-                    
-                    await Task.Run(() =>
-                    {
-                        for (int i = 0; i < parameters.Length; i++)
-                        {
-                            var p = parameters[i];
-
-                            if (i >= args.Length)
-                                throw new ShellException(GetUsage(name, parameters));
-
-                            var arg = args[i];
-
-                            if (p.ParameterType == typeof(string))
-                            {
-                                objs.Add(arg);
-                            }
-                            else
-                            {
-                                objs.Add(JsonConvert.DeserializeObject(arg, p.ParameterType));
-                            }
-                        }
-                    });
-
-                    await Invoke(() =>
-                    {
-                        method.Invoke(instance, objs.ToArray());
-                    });
-                }
-                else
-                {
-                    throw new ShellException($"{name}: command not found.");
-                }
-            }
-        }
-
         /// <summary>
         /// Console command that enables or disables fixed time stepping. ("game.setFixedTimeStep true|false").
         /// </summary>

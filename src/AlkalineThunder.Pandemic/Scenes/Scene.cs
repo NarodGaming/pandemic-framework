@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AlkalineThunder.Pandemic.Debugging;
 using AlkalineThunder.Pandemic.Gui;
 using AlkalineThunder.Pandemic.Gui.Controls;
 using AlkalineThunder.Pandemic.Rendering;
@@ -77,6 +78,8 @@ namespace AlkalineThunder.Pandemic.Scenes
             Gui.Scene = this;
             Gui.SceneSystem = SceneSystem;
             
+            GetModule<DevConsole>().RegisterCommandsInternal(this);
+            
             OnLoad();
         }
 
@@ -86,7 +89,9 @@ namespace AlkalineThunder.Pandemic.Scenes
                 throw new InvalidOperationException("Scene has not been loaded yet.");
 
             GameUtils.Log("Unloading...");
-            
+
+            GetModule<DevConsole>().UnregisterCommandsInternal(this);
+
             OnUnload();
             Gui.Clear();
             Gui.Scene = null;
