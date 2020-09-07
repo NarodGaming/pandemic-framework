@@ -63,7 +63,7 @@ namespace AlkalineThunder.Pandemic.Skinning
                 }
                 else
                 {
-                    if (File.Exists(Path.Combine(ctx.GameLoop.Content.RootDirectory, path)))
+                    if (File.Exists(Path.Combine(ctx.GameLoop.Content.RootDirectory, path + ".xnb")))
                     {
                         texture = ctx.GameLoop.Content.Load<Texture2D>(path);
                     }
