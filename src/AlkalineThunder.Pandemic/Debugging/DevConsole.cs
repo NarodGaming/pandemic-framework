@@ -75,6 +75,15 @@ namespace AlkalineThunder.Pandemic.Debugging
             this.RegisterCommandsInternal(this.GameLoop);
         }
 
+        [Exec("console.fullscreen")]
+        public void SetConsoleFullscreen(bool value)
+        {
+            if (value)
+                _consoleHolder.FixedHeight = 0;
+            else
+                _consoleHolder.FixedHeight = 400;
+        }
+        
         internal void RegisterCommandsInternal(object obj)
         {
             var type = obj.GetType();
