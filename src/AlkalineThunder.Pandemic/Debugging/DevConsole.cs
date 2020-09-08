@@ -71,6 +71,8 @@ namespace AlkalineThunder.Pandemic.Debugging
         protected override void OnLoadContent()
         {
             FindStaticExecs();
+
+            this.RegisterCommandsInternal(this.GameLoop);
         }
 
         internal void RegisterCommandsInternal(object obj)
