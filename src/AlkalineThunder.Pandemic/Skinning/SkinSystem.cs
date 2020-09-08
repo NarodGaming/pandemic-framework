@@ -91,8 +91,9 @@ namespace AlkalineThunder.Pandemic.Skinning
                     catch
                     {
                         GameUtils.Log($"warning: {dirname} skin refused to load.");
+                        continue;
                     }
-
+                    
                     yield return file;
                 }
             }
