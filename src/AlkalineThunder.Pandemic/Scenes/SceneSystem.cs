@@ -59,11 +59,6 @@ namespace AlkalineThunder.Pandemic.Scenes
                 (int) GameLoop.LocalWidth,
                 (int) GameLoop.LocalHeight
             );
-
-        /// <summary>
-        /// Gets a generic, un-skinned font instance for when there's absolutely fuck all else to use.
-        /// </summary>
-        public SpriteFont GenericFont { get; private set; }
         
         /// <summary>
         /// Unloads the top-most scene of the given type.
@@ -295,8 +290,6 @@ namespace AlkalineThunder.Pandemic.Scenes
         /// </summary>
         protected override void OnLoadContent()
         {
-            GenericFont = this.GameLoop.Content.Load<SpriteFont>("GenericFont");
-            
             this.Settings.SettingsUpdated += (sender, args) =>
             {
                 ForceLayoutUpdate();
