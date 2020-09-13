@@ -16,6 +16,14 @@ namespace AlkalineThunder.Pandemic.Input
         private float _clickCooldown;
         private float _clickCooldownStart = 0.2f;
         private MouseButton _lastClick;
+
+        public Vector2 MousePosition =>
+            new Vector2(_lastMouseState.X, _lastMouseState.Y);
+
+        public bool IsPrimaryMouseDown
+            => (Settings.SwapPrimaryMouseButton)
+                ? _lastMouseState.RightButton == ButtonState.Pressed
+                : _lastMouseState.LeftButton == ButtonState.Pressed;
         
         /// <summary>
         /// Occurs when the mouse is moved.
