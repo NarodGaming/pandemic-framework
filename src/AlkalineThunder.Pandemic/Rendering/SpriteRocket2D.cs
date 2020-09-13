@@ -602,6 +602,9 @@ namespace AlkalineThunder.Pandemic.Rendering
         /// <param name="maxError">https://youtu.be/hQ3GW7lVBWY</param>
         public void FillCircle(Vector2 center, float radius, Color color, float maxError = .25f)
         {
+            if (radius <= 1)
+                return;
+            
             FillCircleSegment(center, radius, RightStartAngle, RightEndAngle, color, maxError);
         }
         
