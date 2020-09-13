@@ -205,7 +205,7 @@ namespace AlkalineThunder.Pandemic
             var path = ScreenshotsPath;
             var date = DateTime.UtcNow;
 
-            var filename = $"Screenshot {date.ToShortDateString()} {date.ToLongTimeString().Replace(":", ".")}.png";
+            var filename = $"Screenshot {date.ToShortDateString().Replace("/", "-")} {date.ToLongTimeString().Replace(":", ".")}.png";
 
             return Path.Combine(path, filename);
         }
