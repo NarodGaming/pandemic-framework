@@ -1,0 +1,32 @@
+name: Documentation Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Check out the code damnit."
+        uses: actions/checkout@v1
+        with:
+          submodules: "recursive"
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.301'
+      - name: "Build documentation"
+        uses: nikeee/docfx-action@master
+        with:
+          args: docfx.json
+      - name: "Publish new documentation"
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -azvr --delete
+          path: "_site/"
+          remote_path: "/var/www/docs/pandemic"
+          remote_host: citadel.mvanoverbeek.me
+          remote_user: node-deploy
+          remote_key: ${{ secrets.SSH_KEY }}
