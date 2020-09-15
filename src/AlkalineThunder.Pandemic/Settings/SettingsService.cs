@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AlkalineThunder.Pandemic.Gui.Controls;
+using AlkalineThunder.Pandemic.Scenes;
 using AlkalineThunder.Pandemic.Skinning;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -137,12 +138,17 @@ namespace AlkalineThunder.Pandemic.Settings
             }
         }
 
+        [Exec("settings.setFontSize")]
         public void SetFontSize(FontSizeAdjustment adjustment)
         {
             if (FontSizeAdjustment != adjustment)
             {
                 Settings.FontSize = adjustment;
-                GetModule<SkinSystem>().ReloadSkin();
+                GameLoop.Invoke(() =>
+                {
+                    GetModule<SkinSystem>().ReloadSkin();
+                    GetModule<SceneSystem>().ForceLayoutUpdate();
+                });
             }
         }
         
