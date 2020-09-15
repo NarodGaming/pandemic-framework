@@ -244,6 +244,11 @@ namespace AlkalineThunder.Pandemic.Skinning
 
         protected override void OnLoadContent()
         {
+            ReloadSkin();
+        }
+
+        internal void ReloadSkin()
+        {
             // This is where the featurebuild #2 comes in since we now load the skin from settings.
             if (Settings.ActiveSkinName == "default")
             {

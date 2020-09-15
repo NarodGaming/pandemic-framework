@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AlkalineThunder.Pandemic.Gui.Controls;
+using AlkalineThunder.Pandemic.Skinning;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -22,6 +23,12 @@ namespace AlkalineThunder.Pandemic.Settings
         /// Occurs when a setting has been changed.
         /// </summary>
         public event EventHandler SettingsUpdated;
+
+        /// <summary>
+        /// Gets a value representing the current font size setting.
+        /// </summary>
+        public FontSizeAdjustment FontSizeAdjustment
+            => Settings.FontSize;
 
         /// <summary>
         /// Gets or sets whether the <see cref="BackgroundBlur"/> control
@@ -127,6 +134,15 @@ namespace AlkalineThunder.Pandemic.Settings
                     Settings.GuiScale = value;
                     OnSettingsUpdated();
                 }
+            }
+        }
+
+        public void SetFontSize(FontSizeAdjustment adjustment)
+        {
+            if (FontSizeAdjustment != adjustment)
+            {
+                Settings.FontSize = adjustment;
+                GetModule<SkinSystem>().ReloadSkin();
             }
         }
         

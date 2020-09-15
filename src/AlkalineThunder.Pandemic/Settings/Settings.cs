@@ -11,6 +11,11 @@
         public FullScreenMode FullScreenMode { get; set; } = FullScreenMode.Borderless;
 
         /// <summary>
+        /// Gets or sets the game's font size adjustment.
+        /// </summary>
+        public FontSizeAdjustment FontSize { get; set; } = FontSizeAdjustment.Normal;
+        
+        /// <summary>
         /// Gets or sets a value indicating the desired display resolution or window size of the game.
         /// </summary>
         public string ScreenResolution { get; set; } = string.Empty;

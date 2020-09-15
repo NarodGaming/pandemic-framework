@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using AlkalineThunder.Pandemic.Settings;
 using AlkalineThunder.Pandemic.Skinning.Json;
 using SpriteFontPlus;
 
@@ -125,6 +126,26 @@ namespace AlkalineThunder.Pandemic.Skinning
             var size = font != null ? font.Size : JsonFont.Default.Size;
             var spacing = font != null ? font.Spacing : 0;
             var lineSpacing = font != null ? font.LineSpacing : 0;
+
+            var sizeAdjust = ctx.GameLoop.GetModule<SettingsService>().FontSizeAdjustment;
+
+            switch (sizeAdjust)
+            {
+                case FontSizeAdjustment.Large:
+                    size += 6;
+                    break;
+                case FontSizeAdjustment.Medium:
+                    size += 3;
+                    break;
+                case FontSizeAdjustment.Normal:
+                    break;
+                case FontSizeAdjustment.Small:
+                    size -= 3;
+                    break;
+                case FontSizeAdjustment.Tiny:
+                    size -= 6;
+                    break;
+            }
             
             DynamicSpriteFont loaded;
 
