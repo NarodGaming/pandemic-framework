@@ -10,7 +10,7 @@ This engine was created originally for use by [Socially Distant](https://github.
 
 These are some useful topics to get you started using the engine.
 
-1. [[ Installation ]]
+1. [Installation](installation.md)
 2. [[ Your First Game]]
 3. [[ Console Commands ]]
 4. [[ Scenes and Basic GUIs ]]
