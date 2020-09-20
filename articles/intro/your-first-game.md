@@ -189,14 +189,14 @@ using AlkalineThunder.Pandemic.Skinning;
 
 // ...
 
-var background = Skins.GetColor(SkinColor.Background);
-var foreground = Skins.GetColor(SkinColor.Foreground);
+var background = Skin.GetSkinColor(SkinColor.Default);
+var foreground = Skin.GetSkinColor(SkinColor.Text);
 ```
 
 And for our font, we'll just use the skin's Paragraph font.
 
 ```C#
-var font = Skins.GEtFont(SkinFontStyle.Paragraph);
+var font = Skin.GEtFont(SkinFontStyle.Paragraph);
 ```
 
 With this, we can clear the screen to the background color and draw "Hello World" using the foreground color and font.
@@ -204,10 +204,10 @@ With this, we can clear the screen to the background color and draw "Hello World
 ```C#
 protected override void OnDraw(GameTime gameTime, SpriteRocket2D renderer)
 {
-    var background = Skins.GetColor(SkinColor.Background);
-    var foreground = Skins.GetColor(SkinColor.Foreground);
+    var background = Skin.GetSkinColor(SkinColor.Default);
+    var foreground = Skin.GetSkinColor(SkinColor.Text);
 
-    var font = Skins.GEtFont(SkinFontStyle.Paragraph);
+    var font = Skin.GEtFont(SkinFontStyle.Paragraph);
 
     renderer.Begin();
     
