@@ -686,6 +686,15 @@ namespace AlkalineThunder.Pandemic.Gui
         {
             
         }
+
+        private Vector2 ComputedTranslation
+            => (Parent != null) ? (Parent.ComputedTranslation + Transform.Position) : Transform.Position; 
+        
+        private float ComputedRotation =>
+            (Parent != null) ? (Parent.ComputedRotation + Transform.Rotation) : Transform.Rotation;
+
+        private Vector2 ComputedScale
+            => (Parent != null) ? (Parent.ComputedScale * Transform.Scale) : Transform.Scale;
         
         /// <summary>
         /// Paints the control and all of its children on-screen.
@@ -696,18 +705,18 @@ namespace AlkalineThunder.Pandemic.Gui
         {
             if (this.Visible && (!this.BoundingBox.IsEmpty))
             {
+                renderer.RenderOpacity = ComputedOpacity;
+                renderer.Transform.Position = ComputedTranslation;
+                renderer.Transform.Rotation = ComputedRotation;
+                renderer.Transform.Scale = ComputedScale;
+                
                 if (SceneSystem.EnableClipping)
                 {
                     if (_scissorRect.IsEmpty)
                         return;
 
-                    renderer.ClippingRectangle = _scissorRect;
+                    renderer.ClippingRectangle = _scissorRect.InflateWithTransform(renderer.Transform);
                 }
-
-                renderer.RenderOpacity = ComputedOpacity;
-                renderer.Transform.Position = Transform.Position;
-                renderer.Transform.Rotation = Transform.Rotation;
-                renderer.Transform.Scale = Transform.Scale;
                 
                 this.OnPaint(renderer);
 

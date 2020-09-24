@@ -20,7 +20,7 @@ namespace AlkalineThunder.Pandemic.Rendering
 
         public Vector2 PerformTransform(Vector2 position)
         {
-            var rotated = Vector2.Transform(position, Matrix.CreateRotationZ(Rotation));
+            var rotated = Vector2.Transform(position, Matrix.CreateRotationZ((MathF.PI / 180) * Rotation));
             var translated = Vector2.Transform(rotated, Matrix.CreateTranslation(Position.X, Position.Y, 0));
             var scaled = Vector2.Transform(translated, Matrix.CreateScale(Scale.X, Scale.Y, 1));
 
