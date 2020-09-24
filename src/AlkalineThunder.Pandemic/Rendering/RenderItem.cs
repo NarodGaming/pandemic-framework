@@ -11,7 +11,8 @@ namespace AlkalineThunder.Pandemic.Rendering
         private VertexPositionColorTexture[] _vbo;
         private int[] _ibo;
         private float _renderOpacity;
-
+        private Transform _transform;
+        
         public int Triangles => _indexPointer / 3;
         
         public Texture2D Texture { get; set; }
@@ -19,8 +20,9 @@ namespace AlkalineThunder.Pandemic.Rendering
         public VertexPositionColorTexture[] Vertices => _vbo;
         public int[] IndexBuffer => _ibo;
 
-        public RenderItem(float renderOpacity=1)
+        public RenderItem(float renderOpacity, Transform transform)
         {
+            _transform = transform;
             _renderOpacity = renderOpacity;
             _vbo = new VertexPositionColorTexture[128];
             _ibo = new int[128];
@@ -43,7 +45,8 @@ namespace AlkalineThunder.Pandemic.Rendering
                 Array.Resize(ref _vbo, _vbo.Length * 2);
             }
 
-            var v = new VertexPositionColorTexture(new Vector3(position, 0), color * _renderOpacity, texCoord);
+            var transformed = _transform.PerformTransform(position);
+            var v = new VertexPositionColorTexture(new Vector3(transformed.X, transformed.Y, 0), color * _renderOpacity, texCoord);
             _vbo[_vertexPointer] = v;
             _vertexPointer++;
             

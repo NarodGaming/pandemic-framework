@@ -23,6 +23,9 @@ namespace AlkalineThunder.Pandemic.Rendering
         private SpriteEffect _spriteEffect;
         private Matrix _transformMatrix;
         private float _renderOpacity = 1;
+        private Transform _transform = Transform.Default;
+
+        public Transform Transform => _transform;
 
         public float RenderOpacity
         {
@@ -169,7 +172,7 @@ namespace AlkalineThunder.Pandemic.Rendering
                     if (last.Texture == tex) return last;
                 }
 
-                var newBatchItem = new RenderItem(_renderOpacity);
+                var newBatchItem = new RenderItem(_renderOpacity, _transform);
                 newBatchItem.Texture = tex;
                 _batch.Add(newBatchItem);
                 return newBatchItem;

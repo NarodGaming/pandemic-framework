@@ -163,7 +163,20 @@ namespace AlkalineThunder.Pandemic.Gui
         private SceneSystem _topLevelSceneSystem;
         private List<IAttachedProperty> _props = new List<IAttachedProperty>();
         private float _opacity = 1;
+        private Transform _transform = new Transform();
 
+        public Transform Transform
+        {
+            get => _transform;
+            set
+            {
+                if (_transform != value)
+                {
+                    _transform = value ?? throw new ArgumentNullException(nameof(value));
+                }
+            }
+        }
+        
         public float Opacity
         {
             get => _opacity;
@@ -692,10 +705,16 @@ namespace AlkalineThunder.Pandemic.Gui
                 }
 
                 renderer.RenderOpacity = ComputedOpacity;
+                renderer.Transform.Position = Transform.Position;
+                renderer.Transform.Rotation = Transform.Rotation;
+                renderer.Transform.Scale = Transform.Scale;
                 
                 this.OnPaint(renderer);
 
                 renderer.RenderOpacity = 1;
+                renderer.Transform.Position = Vector2.Zero;
+                renderer.Transform.Rotation = 0;
+                renderer.Transform.Scale = Vector2.One;
 
                 renderer.ClippingRectangle = Rectangle.Empty;
                 
