@@ -22,6 +22,24 @@ namespace AlkalineThunder.Pandemic.Rendering
         private Texture2D _blankTexture;
         private SpriteEffect _spriteEffect;
         private Matrix _transformMatrix;
+        private float _renderOpacity = 1;
+
+        public float RenderOpacity
+        {
+            get => _renderOpacity;
+            set
+            {
+                if (_running)
+                    throw new InvalidOperationException("Cannot change render opacity during a batching operation.");
+
+                var clamped = MathHelper.Clamp(value, 0, 1);
+                
+                if (Math.Abs(_renderOpacity - clamped) > 0.0001f)
+                {
+                    _renderOpacity = clamped;
+                }
+            }
+        }
         
         /// <summary>
         /// Gets the graphics rendering device that this renderer will draw to.
@@ -151,7 +169,7 @@ namespace AlkalineThunder.Pandemic.Rendering
                     if (last.Texture == tex) return last;
                 }
 
-                var newBatchItem = new RenderItem();
+                var newBatchItem = new RenderItem(_renderOpacity);
                 newBatchItem.Texture = tex;
                 _batch.Add(newBatchItem);
                 return newBatchItem;

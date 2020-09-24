@@ -162,7 +162,21 @@ namespace AlkalineThunder.Pandemic.Gui
         private bool _measurementValid;
         private SceneSystem _topLevelSceneSystem;
         private List<IAttachedProperty> _props = new List<IAttachedProperty>();
+        private float _opacity = 1;
 
+        public float Opacity
+        {
+            get => _opacity;
+            set
+            {
+                var clamped = MathHelper.Clamp(value, 0, 1);
+                if (Math.Abs(clamped - _opacity) > 0.0001f)
+                {
+                    _opacity = clamped;
+                }
+            }
+        }
+        
         /// <summary>
         /// Gets or sets a value indicating whether the control is visible to the layout system.
         /// </summary>
@@ -385,6 +399,9 @@ namespace AlkalineThunder.Pandemic.Gui
         /// Gets a value representing the calculated desired size of the control.
         /// </summary>
         public Vector2 DesiredSize { get; private set; }
+
+        public float ComputedOpacity
+            => (Parent != null) ? (Opacity * Parent.ComputedOpacity) : Opacity;
         
         /// <summary>
         /// Gets a value indicating the location of the control on-screen.
@@ -673,8 +690,12 @@ namespace AlkalineThunder.Pandemic.Gui
 
                     renderer.ClippingRectangle = _scissorRect;
                 }
+
+                renderer.RenderOpacity = ComputedOpacity;
                 
                 this.OnPaint(renderer);
+
+                renderer.RenderOpacity = 1;
 
                 renderer.ClippingRectangle = Rectangle.Empty;
                 
