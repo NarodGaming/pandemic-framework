@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AlkalineThunder.Pandemic.Animation;
 using AlkalineThunder.Pandemic.Gui.Markup;
 using AlkalineThunder.Pandemic.Input;
 using AlkalineThunder.Pandemic.Rendering;
@@ -142,6 +143,7 @@ namespace AlkalineThunder.Pandemic.Gui
             }
         }
 
+        private Animator _animator;
         private bool _layoutVisible = true;
         private Rectangle _scissorRect;
         private bool _needsArrangement = true;
@@ -502,6 +504,8 @@ namespace AlkalineThunder.Pandemic.Gui
             else
                 return null;
         }
+
+        public Animator Animator => _animator;
         
         /// <summary>
         /// Gets a <see cref="ControlCollection"/> containing the children of the control.
@@ -514,6 +518,8 @@ namespace AlkalineThunder.Pandemic.Gui
         public Control()
         {
             InternalChildren = new ControlCollection(this);
+            
+            _animator = new Animator();
         }
 
         /// <summary>
@@ -633,6 +639,7 @@ namespace AlkalineThunder.Pandemic.Gui
         /// <param name="gameTime">An object representing the time since the last engine tick.</param>
         public void Update(GameTime gameTime)
         {
+            _animator.Update(gameTime);
             OnUpdate(gameTime);
 
             for (var i = 0; i < InternalChildren.Count; i++)
