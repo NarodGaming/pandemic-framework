@@ -47,7 +47,15 @@ namespace AlkalineThunder.Pandemic.Animation
 
             _animations.Add(anim);
         }
+        
+        public void SmoothTransition<T>(T obj, Expression<Func<T, Vector2>> member, Vector2 start, Vector2 end,
+            float duration)
+        {
+            var memberInfo = GetMemberInfo(member);
+
+            var anim = new VectorTransition(obj, start, end, duration, memberInfo);
+
+            _animations.Add(anim);
+        }
     }
-    
-    
 }
