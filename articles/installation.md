@@ -6,7 +6,7 @@ Currently, there are no NuGet packages available for Pandemic Framework.
 
 ## Git Submodules
 
-**Git Submodules** allow you to easily get the latest changes to the engine using a single command.  They also let you clone the engine's code directly into your own repository, and make changes to your game without ever interfering with the engine itself.
+**Git Submodules** allow you to easily get the latest changes to the engine using a single command.  They also let you clone the engines code directly into your own repository, and make changes to your game without ever interfering with the engine itself.
 
 To set this up, do the following:
 
@@ -30,7 +30,7 @@ cd ..
 git submodule update --remote --init --recursive
 ```
 
-This will create a folder called `third-party` to store the framework code in, add the framework as a submodule, and then recursively update the submodule to pull it's code in and all of it's dependencies.
+This will create a folder called `third-party` to store the framework code in, add the framework as a submodule, and then recursively update the submodule to pull its code in and all of its dependencies.
 
 ### 3. Create a .NET Core solution
 
@@ -56,7 +56,7 @@ dotnet sln add ../third-party/pandemic-framework/third-party/SpriteFontPlus/src/
 
 ### 5. Add project references
 
-The final step is to open your IDE of choice, and add both `AlkalineThunder.Pandemic` and `SpriteFontPlus.MonoGame` to your game's project as references.
+The final step is to open your IDE of choice, and add both `AlkalineThunder.Pandemic` and `SpriteFontPlus.MonoGame` to your games project as references.
 
 ### All done!
 
