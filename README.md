@@ -8,7 +8,7 @@ This engine was developed for [Socially Distant](https://github.com/alkalinethun
 
 ## Main features
 
-Pandemic Framework is designed for games that require a somewhat complex user interface.  It's feature set therefore has that in mind.
+Pandemic Framework is designed for games that require a somewhat complex user interface.  Its feature set therefore has that in mind.
 
  - Easy-to-use Scene System.
  - Flexible keyboard/mouse input system.  Gamepad and Touch support coming soon.
