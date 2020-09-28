@@ -1,6 +1,6 @@
 # Your First Game
 
-Pandemic Framework makes it relatively easy to set up a simple game without knowing anything about MonoGame itself.  Although the engine is heavily focused on it's UI system, it is possible to do 2D graphics rendering through an easy API.
+Pandemic Framework makes it relatively easy to set up a simple game without knowing anything about MonoGame itself.  Although the engine is heavily focused on its UI system, it is possible to do 2D graphics rendering through an easy API.
 
 This article will show you how to set up a **Hello World** program using both the 2D renderer and the GUI system.  In this article you'll learn the basic concepts of **Engine Modules**, **Scenes,** the **Skinning System**, and **Controls**.  Let's get started.
 
@@ -29,17 +29,17 @@ namespace MyGame
 
 The important parts of this code are:
 
-1. `using AlkalineThunder.Pandemic;` - this lets us access a lot of the Pandemic Framework's API.
-2. `GameUtils.Run()` - This starts the engine up, creates our game window, and starts the game loop.  Once the game's been exited, our program will end.
-3. `typeof(Program).Assembly` - This isn't really important in this tutorial, but the engine needs it so that it can figure out where to properly store the player's settings and save data for your game.
+1. `using AlkalineThunder.Pandemic;` - this lets us access a lot of the Pandemic Frameworks API.
+2. `GameUtils.Run()` - This starts the engine up, creates our game window, and starts the game loop.  Once the game has been exited, our program will end.
+3. `typeof(Program).Assembly` - This isn't really important in this tutorial, but the engine needs it so that it can figure out where to properly store the players settings and save data for your game.
 
 Run your game, and you should see a black screen with nothing going on.  If you press `F1`, you snould see Pandemic Framework's **Dev Console**.  You won't need this right now, but it's a good sign that things are working.
 
 ## Step 3: Creating a Game Module
 
-Pandemic is built to be highly extensible and to support modding and plugins.  To facilitate this, we have implemented a simple **Engine Module** system.  Many of the engine's core features are built as Modules, and every game must have at least one Module that acts as the Game Module.
+Pandemic is built to be highly extensible and to support modding and plugins.  To facilitate this, we have implemented a simple **Engine Module** system.  Many of the engines core features are built as Modules, and every game must have at least one Module that acts as the Game Module.
 
-The Game Module keeps track of the game's state, and is responsible for loading/unloading any data and assets needed throughout the entire game.  In this tutorial, we need it to load our Hello World scene that we'll implement later.
+The Game Module keeps track of the games state, and is responsible for loading/unloading any data and assets needed throughout the entire game.  In this tutorial, we need it to load our Hello World scene that we'll implement later.
 
 1. Create a new empty C# class, `MyGameModule.cs`
 
@@ -180,7 +180,7 @@ protected override void OnDraw(GameTime gameTime, SpriteRocket2D renderer)
 
 This method will run every frame and let us draw things to our Scene.
 
-To draw some text, we need a Font and a Color.  We can get both of these from the **Skinning System**.  This will allow your game to respect the user's Dark Mode preference, but isn't required.
+To draw some text, we need a Font and a Color.  We can get both of these from the **Skinning System**.  This will allow your game to respect the users Dark Mode preference, but isn't required.
 
 Let's quickly get two `Color` values from the skin, one for the background and one for the foreground.
 
