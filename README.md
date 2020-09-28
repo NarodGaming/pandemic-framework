@@ -6,7 +6,7 @@
 
 This engine was developed for [Socially Distant](https://github.com/alkalinethunder/socially-distant).  In Socially Distant, you play as a private investigator and hacker working to uncover a conspiracy and find the truth behind a global **pandemic.**
 
-## Main features
+## Main Features
 
 Pandemic Framework is designed for games that require a somewhat complex user interface.  Its feature set therefore has that in mind.
 
@@ -64,7 +64,7 @@ Currently, there are **no NuGet packages** available for the Pandemic Framework.
 
 You may also need to install the relevant NuGet packages, such as MonoGame, that are used by the engine - however I'm not sure if they get pulled in automatically.
 
-## Getting started
+## Getting Started
 
 All you should need for Pandemic Framework to boot up, after following the steps above, is to have just a few lines of boilerplate in your `Program.cs`:
 
